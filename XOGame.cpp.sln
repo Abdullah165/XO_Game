@@ -1,31 +1,92 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1169
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XOGame.cpp", "XOGame.cpp\XOGame.cpp.vcxproj", "{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Debug|x64.ActiveCfg = Debug|x64
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Debug|x64.Build.0 = Debug|x64
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Debug|x86.ActiveCfg = Debug|Win32
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Debug|x86.Build.0 = Debug|Win32
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Release|x64.ActiveCfg = Release|x64
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Release|x64.Build.0 = Release|x64
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Release|x86.ActiveCfg = Release|Win32
-		{37B9631F-C34D-4FEF-B83A-16CAAC2DD372}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B5BE99E7-066B-48E3-9431-1FC66D6A0232}
-	EndGlobalSection
-EndGlobal
+#include<iostream>
+
+char square[10] = {'1','2', '3', '4', '5', '6', '7', '8', '9'};
+
+void printBoard()
+{
+	std::system("cls");
+	for (int i = 1; i < 10; i++)
+	{
+		if (i % 3 == 0)  //Print the current number and Add new line after three numbers.
+			std::cout << " " << square[i-1] << std::endl;
+		else
+			std::cout << " " << square[i-1] << " ";
+	}std::cout << "\n";
+}
+
+void Replace(int position,char player)
+{
+	square[position-1] = player;
+	printBoard();
+}
+
+bool isPlayerXWin()
+{
+	if ((square[0] == 'X') && (square[1] == 'X') && (square[2] == 'X')) return true;
+	else if ((square[0] == 'X') && (square[3] == 'X') && (square[6] == 'X')) return true;
+	else if ((square[1] == 'X') && (square[4] == 'X') && (square[7] == 'X')) return true;
+	else if ((square[2] == 'X') && (square[5] == 'X') && (square[8] == 'X')) return true;
+	else if ((square[3] == 'X') && (square[4] == 'X') && (square[5] == 'X')) return true;
+	else if ((square[6] == 'X') && (square[7] == 'X') && (square[8] == 'X')) return true;
+	else if ((square[0] == 'X') && (square[4] == 'X') && (square[8] == 'X')) return true;
+	else if ((square[2] == 'X') && (square[4] == 'X') && (square[6] == 'X')) return true;
+	return false;
+}
+
+bool isPlayerOWin()
+{
+	if ((square[0] == 'O') && (square[1] == 'O') && (square[2] == 'O')) return true;
+	else if ((square[0] == 'O') && (square[3] == 'O') && (square[6] == 'O')) return true;
+	else if ((square[1] == 'O') && (square[4] == 'O') && (square[7] == 'O')) return true;
+	else if ((square[2] == 'O') && (square[5] == 'O') && (square[8] == 'O')) return true;
+	else if ((square[3] == 'O') && (square[4] == 'O') && (square[5] == 'O')) return true;
+	else if ((square[6] == 'O') && (square[7] == 'O') && (square[8] == 'O')) return true;
+	else if ((square[0] == 'O') && (square[4] == 'O') && (square[8] == 'O')) return true;
+	else if ((square[2] == 'O') && (square[4] == 'O') && (square[6] == 'O')) return true;
+	return false;
+}
+
+
+int main()
+{
+	int NumberOfTrying = 4;
+	int XPosition;
+	int OPosition;
+
+	printBoard();
+
+	while (true)
+	{
+
+		std::cout << "Choose your position PlayerX: ";
+		std::cin >> XPosition;
+
+		Replace(XPosition,'X');
+
+		if (isPlayerXWin())
+		{
+			std::cout << "Player X is Winner..." << std::endl;
+			break;
+		}
+
+		std::cout << "Choose your position PlayerO: ";
+		std::cin >> OPosition;
+		Replace(OPosition,'O');
+
+		if (isPlayerOWin())
+		{
+			std::cout << "Player O is Winner..." << std::endl;
+			break;
+		}
+
+		NumberOfTrying--;
+		if (NumberOfTrying == 0)
+		{
+			std::cout << "No Winners, Game Over!!" << std::endl;
+			break;
+		}
+	}
+
+	std::cin.get();
+}
